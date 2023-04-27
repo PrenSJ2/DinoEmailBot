@@ -63,7 +63,7 @@ while True:
             else:
                 print("No Sentry link found")
                 # Mark the email as unread
-                mark_as_unread_button = wait.until(EC.presence_of_element_located((By.XPATH, "//div[@id=':4']/div[2]/div/div/div[2]/div[3]/div.")))
+                mark_as_unread_button = wait.until(EC.presence_of_element_located((By.XPATH, "//div[@id=':4']/div[2]/div/div/div[3]/div/div")))
                 mark_as_unread_button.click()
 
             # Go back to the search results
