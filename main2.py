@@ -12,10 +12,10 @@ driver = webdriver.Chrome(options=chrome_options)
 wait = WebDriverWait(driver, 10)
 
 # Navigate to Gmail
-driver.get("https://mail.google.com/mail/u/3")
+driver.get("https://mail.google.com/mail/u/0")
 
 # Search for emails containing the word "sentry"
-wait.until(EC.presence_of_element_located((By.NAME, "q"))).send_keys('subject:([tc-server])' + Keys.RETURN)
+wait.until(EC.presence_of_element_located((By.NAME, "q"))).send_keys('subject:([tc-server]) production' + Keys.RETURN)
 
 # Wait for search results to load
 time.sleep(5)
@@ -42,26 +42,28 @@ while True:
 
             # Check if the <a class="app-6loic e1kml3iv1"> element has an href link
             app_link = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a.app-6loic.e1kml3iv1")))
-            print(app_link.get_attribute("href"))
+            # print(app_link.get_attribute("href"))
             if app_link.get_attribute("href"):
-                # Close the Sentry tab
-                driver.close()
+                issue_exists = True
+            else:
+                issue_exists = False
 
-                # Switch back to the Gmail tab
-                gmail_tab = driver.window_handles[0]
-                driver.switch_to.window(gmail_tab)
+            # Close the Sentry tab
+            driver.close()
 
+            # Switch back to the Gmail tab
+            gmail_tab = driver.window_handles[0]
+            driver.switch_to.window(gmail_tab)
+
+            if issue_exists:
+                print("Found Sentry link")
                 # Delete the email
-                delete_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".T-I.J-J5-Ji.nX.T-I-ax7")))
+                delete_button = wait.until(EC.presence_of_element_located((By.XPATH, "//div[@id=':4']/div[2]/div/div/div[2]/div[3]/div")))
                 delete_button.click()
             else:
-                # Close the Sentry tab and switch back to the Gmail tab if the link is not found
-                driver.close()
-                gmail_tab = driver.window_handles[0]
-                driver.switch_to.window(gmail_tab)
-
+                print("No Sentry link found")
                 # Mark the email as unread
-                mark_as_unread_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".T-I.J-J5-Ji.BO.T-I-ax7")))
+                mark_as_unread_button = wait.until(EC.presence_of_element_located((By.XPATH, "//div[@id=':4']/div[2]/div/div/div[2]/div[3]/div.")))
                 mark_as_unread_button.click()
 
             # Go back to the search results

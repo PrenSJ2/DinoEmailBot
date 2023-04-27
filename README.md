@@ -32,7 +32,11 @@ Before running the Dino Email Bot script, you need to start your Chrome browser 
 
 2. Open a terminal (command prompt or PowerShell on Windows) and run the following command:
 
-For Unix-based systems (macOS and Linux)
+
+For Linux
+`/opt/google/chrome/google-chrome  --remote-debugging-port=9222`
+
+For MacOS
 
 `'/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome' --remote-debugging-port=9222`
 
